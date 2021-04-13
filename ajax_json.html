@@ -1,0 +1,112 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax 2 -Local JSON</title>
+</head>
+<body>
+    <button id="btn_user">Single user</button>
+    <button id="btn_users">Multiple users</button>
+
+    <br><br>
+    
+    <h1>Single user</h1>
+    <div id="single_user" style="border: 1px solid black;  width:fit-content;"></div>
+
+
+    <h1> Multiple users</h1>
+    <div id="multiple_users" style="border: 1px solid black;  width:fit-content;"></div>
+
+    <script>
+        //fetching two buttons i.e. button1 and button2 and adding listeners for both the buttons which will invoke their respective functions.
+        document.getElementById('btn_user').addEventListener('click', loadUser);
+
+        document.getElementById('btn_users').addEventListener('click', loadUsers);
+        
+        
+        
+        
+        //Function for button1 
+        
+        function loadUser(){
+            //(1) xhr object
+            var xhr_obj=new XMLHttpRequest();
+            //(2) open xhr object
+            xhr_obj.open('GET', 'single_user.json', true);
+            //(3)onload
+            xhr_obj.onload=function(){
+                if(this.status==200){
+
+                    //to display the entire JSON tree in the console
+                    console.log(this.responseText);
+
+                    //assigning the user.json (JSON file) file to new variable user 
+                    var user=JSON.parse(this.responseText);
+
+                    //fetching all the properties of JSON file and putting them in listitem and assigning this entire thing to a variable called output
+                    var output='';
+
+                    output += "<ul>" +
+                        "<li>ID: "+user.id+"</li>"+
+                        "<li>Name: "+user.name+"</li>"+
+                        "<li>Email: "+user.email+"</li>"+
+                        "<ul>";
+
+                    //displaying the data to the frontend using the variable which holds everything called output
+                    document.getElementById("single_user").innerHTML=output;
+                }
+            }
+            //(4) send request
+            xhr_obj.send();
+        }
+
+        
+        //Function for button2
+        
+        function loadUsers(){
+            //(1) xhr object
+            var xhr_obj=new XMLHttpRequest();
+            //(2) open xhr object
+            xhr_obj.open('GET', 'multiple_users.json', true);
+            //(3)onload
+            xhr_obj.onload=function(){
+                if(this.status==200){
+
+                     //to display the entire JSON tree in the console
+                    console.log(this.responseText);
+
+                  //assigning the users.json (JSON file) file to new variable users 
+                    var users=JSON.parse(this.responseText);
+
+                 //fetching all the properties of JSON file and putting them in listitem and assigning this entire thing to a variable called output. Here, we are using For/In loop which will make the loop run for every properties of users(user.json).
+                 var output='';
+
+               for(var i in users){
+                        output += '<ul>' +
+                        '<li>ID: '+users[i].id+'</li>'+
+                        '<li>Name: '+users[i].name+'</li>'+
+                        '<li>Email: '+users[i].email+'</li>'+
+                        '<ul>';
+                    }        
+
+                    //displaying the data to the frontend from background
+                    document.getElementById("multiple_users").innerHTML=output;
+                }
+            }
+            //(4) send request
+            xhr_obj.send();
+        }
+
+        
+
+
+
+      
+    </script>
+
+
+
+    
+</body>
+</html>
