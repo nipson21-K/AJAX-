@@ -1,0 +1,48 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax Crash Learning</title>
+</head>
+<body>
+    <button id="txt_btn"> TEXT</button>
+
+    <script>
+        //event listener for button
+        document.getElementById('txt_btn').addEventListener('click', loadText);
+
+        //function which gets invoked after the button is clicked
+        function loadText(){
+
+            //(1) creating an XMLHttpRequest (XHR) object
+            const xhr_obj=new XMLHttpRequest();
+
+            //(2) Open method for XHR bbject [type, url/file, async]
+            xhr_obj.open('GET', 'simple.txt', true);
+
+            //[OPTIONAL] Display message and READYSTATE value until the file is loaded
+            xhr_obj.onprogress=function(){
+                console.log(" File load on progress. READYSTATE: ", xhr_obj.readyState);
+            }
+
+            //(3) onload which defines what to do when the XHR object is loaded
+            xhr_obj.onload=function(){
+                if(this.status === 200)  //checking if the file 'simple.txt' exists or not
+                {
+                   console.log(this.responseText);  //outputs the contents of 'simple.txt'
+                }
+            }
+            
+            //(4) To handle error
+            xhr_obj.onerror=function(){
+                console.log("An Error occured..");
+            }
+
+            //(5) To send request
+            xhr_obj.send();
+        }
+    </script>
+    
+</body>
+</html>
