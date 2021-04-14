@@ -1,0 +1,75 @@
+<!--Here we are working with external API. We fetch data from 'https://api.github.com/users' and manipulate them as per our want and display them in Front End-->
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+    <button id="btn">Load external API</button>
+    <br><br>
+    <h1 style=" width:fit-content;  margin:auto;"> Users </h1>
+    <div id="users" style=" width:fit-content;  margin:auto;"></div>
+
+    <script>
+        //fetching button & adding eventlistener to it which will call function called loadAPI
+        document.getElementById("btn").addEventListener("click", loadAPI);
+
+        function loadAPI() {
+            //(1) creating an XHR object
+            const xhr_obj = new XMLHttpRequest();
+
+            //(2) opening XHR object
+            xhr_obj.open("GET", "https://api.github.com/users", true);
+
+            //(3) onload for XHR object
+            xhr_obj.onload = function () {
+                if (this.status === 200) {
+                    //assigning the entire JSON file to users
+                    users = JSON.parse(this.responseText);
+
+                    //creating a variable to store the selected properties of JSON
+                    var output = '';
+
+                    //for in loop to prints object of JSON file
+                    for (var i in users) {
+                        //assigning all the properties of JSON one by one to variable called output to display all of them together in the user-interface after this for in loop will get over i.e. after loop will run for all the datas
+
+                        output += "<div style='border:1px solid black; background-color: blanchedalmond;'>" +
+                            "<img src='" + users[i].avatar_url + "'width='50' height='50'>" +
+                            "<ul>" +
+                            "<li> ID: " + users[i].id + "</li>" +
+                            "<li> Node ID: " + users[i].node_id + "</li>" +
+                            "<li> Type: " + users[i].type + "</li>" +
+                            "</ul>" +
+                            "</div>" +
+                            "<br>"
+
+                    }
+
+                    //displaying the JSON datas which we fetched above on the user interface
+                    document.getElementById("users").innerHTML = output;
+                }
+            }
+
+            //(4) XHR send request
+            xhr_obj.send();
+        }
+
+
+
+    </script>
+
+
+
+
+
+</body>
+
+</html>
